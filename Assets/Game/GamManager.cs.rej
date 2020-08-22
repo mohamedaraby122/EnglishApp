@@ -1,0 +1,25 @@
+diff a/Assets/GamManager.cs b/Assets/GamManager.cs	(rejected hunks)
+@@ -84,16 +194,18 @@
+         return false;
+     }
+ 
+-   public float timeLeft = 30.0f;
+ 
+     void Update()
+     {
+-        timeLeft -= Time.deltaTime;
+-        if (timeLeft < 0)
++        if (sceneType == SceneType.Quiz)
+         {
+-            GameOver();
++            timeLeft -= Time.deltaTime;
++            if (timeLeft < 0)
++            {
++                GameOver();
++            }
++            timerText.text = (int)timeLeft + " Seconds";
+         }
+-        timerText.text = (int)timeLeft + " Seconds";
+     }
+ 
+     public void GameOver()
