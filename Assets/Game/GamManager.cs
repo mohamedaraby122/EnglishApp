@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using Crosstales.RTVoice;
 public class GamManager : MonoBehaviour
 {
     public Transform UnArrangedParent;
@@ -73,11 +73,15 @@ public class GamManager : MonoBehaviour
         }
     }
     public int curentMainDragCounter = 0;
+    public void SpeakNow(string txt)
+    {
+        Speaker.Speak(txt);
+    }
     public void ChangeCurrnetImageOnly()
     {
         ImagesLayers[MainDragSceneCounter].SetActive(true);
         ImagesLayers[MainDragSceneCounter].GetComponent<Image>().sprite = MainDragImagesLayers[MainDragSceneCounter];
-
+        SpeakNow(MainDragImagesLayers[MainDragSceneCounter].name);
         //our tag that tell us this this the current snap zone ( MainBoard )
         //agesLayers[MainDragSceneCounter].gameObject.tag = "Untagged";
         // MainDragSceneCounter++;
@@ -89,7 +93,7 @@ public class GamManager : MonoBehaviour
             //You complete the Layers              
             //Now to the Next Scene
             audioSource.clip = completeThePuzzle;
-            audioSource.Play();//Done
+            
             StartCoroutine(WaitTillShowTheWinPanel_MainDragScene());
         }
 
@@ -102,13 +106,17 @@ public class GamManager : MonoBehaviour
 
     IEnumerator WaitTillShowTheWinPanel_MainDragScene()
     {
+        yield return new WaitForSeconds(2);//put your time 3 or5 ..
         VocuplaryDonePanel.SetActive(true);
-        yield return new WaitForSeconds(2);//put your time 3 or5 ...
-        MainDragScene_WinPanel.SetActive(true);
+        Invoke("ShowMainDragPanel", 1.2f);
         audioSource.clip = winClip;
         audioSource.Play();
 
 
+
+    } public void ShowMainDragPanel()
+    {
+        MainDragScene_WinPanel.SetActive(true);
     }
     //>>>>>>> Stashed changes
     private void Start()
